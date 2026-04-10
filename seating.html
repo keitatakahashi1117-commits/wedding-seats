@@ -168,23 +168,12 @@
       margin: 0 auto;
     }
 
-    /* Stage / front */
-    .fp-stage {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 12px;
-    }
-    .fp-stage-label {
-      display: inline-block;
-      padding: 6px 32px;
-      border: 1px solid var(--gold-light);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 12px;
-      letter-spacing: 0.25em;
-      color: var(--gold-dark);
-      background: linear-gradient(135deg, rgba(201,169,110,0.08), rgba(201,169,110,0.02));
+    .fp-keishoryaku {
+      font-size: 10px;
+      color: var(--text-light);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      text-align: left;
     }
 
     /* Main table */
@@ -439,10 +428,7 @@
         <div class="floor-plan">
 
           <!-- Rendered by JS -->
-          <div id="fpStage" class="fp-stage">
-            <span class="fp-stage-label">ステージ / 演台</span>
-            <span style="font-size:10px;color:var(--text-light);letter-spacing:0.08em;">敬称略</span>
-          </div>
+          <p class="fp-keishoryaku">※敬称略</p>
           <div id="fpMain" class="fp-main-row"></div>
           <div id="fpRow1" class="fp-row fp-row-4"></div>
           <div id="fpRow2" class="fp-row fp-row-3"></div>
