@@ -279,7 +279,7 @@
 
       const rows = table.guests.map(g => `
         <li class="print-guest-item">
-          <span class="print-guest-name">${g.name} <span class="print-guest-sama">様</span></span>
+          <span class="print-guest-name">${g.name}${g.noSama ? '' : ' <span class="print-guest-sama">様</span>'}</span>
           <span class="print-guest-kana">${g.kana}</span>
           <span class="print-guest-relation">${g.relation}</span>
         </li>

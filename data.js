@@ -97,8 +97,8 @@ const TABLES = [
     guests: [
       { name: '髙橋 凌也', kana: 'たかはし りょうや', relation: '新郎 兄' },
       { name: '髙橋 智大', kana: 'たかはし ともひろ', relation: '新郎 兄' },
-      { name: '髙橋 あけみ', kana: 'たかはし あけみ', relation: '新郎 母' },
-      { name: '髙橋 直人', kana: 'たかはし なおと', relation: '新郎 父' },
+      { name: '髙橋 あけみ', kana: 'たかはし あけみ', relation: '新郎 母', noSama: true },
+      { name: '髙橋 直人', kana: 'たかはし なおと', relation: '新郎 父', noSama: true },
     ]
   },
   {
@@ -108,8 +108,8 @@ const TABLES = [
     guests: [
       { name: '菊地 希帆', kana: 'きくち きほ', relation: '新婦 義妹' },
       { name: '菊地 郁弥', kana: 'きくち ふみや', relation: '新婦 弟' },
-      { name: '菊地 喜晴', kana: 'きくち よしはる', relation: '新婦 父' },
-      { name: '菊地 知子', kana: 'きくち ともこ', relation: '新婦 母' },
+      { name: '菊地 喜晴', kana: 'きくち よしはる', relation: '新婦 父', noSama: true },
+      { name: '菊地 知子', kana: 'きくち ともこ', relation: '新婦 母', noSama: true },
     ]
   },
 ];

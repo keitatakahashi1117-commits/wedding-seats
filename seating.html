@@ -556,7 +556,7 @@
       const guestsHtml = table.guests.map(g => `
         <li class="guest-item" data-name="${g.name}" data-kana="${g.kana}">
           <div>
-            <div class="guest-name">${g.name} <span style="font-size:11px;color:var(--text-light);font-weight:300;">様</span></div>
+            <div class="guest-name">${g.name}${g.noSama ? '' : ' <span style="font-size:11px;color:var(--text-light);font-weight:300;">様</span>'}</div>
             <div class="guest-kana">${g.kana}</div>
           </div>
           <span class="guest-relation">${g.relation}</span>
