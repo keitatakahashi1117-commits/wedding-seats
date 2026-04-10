@@ -170,7 +170,10 @@
 
     /* Stage / front */
     .fp-stage {
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
       margin-bottom: 12px;
     }
     .fp-stage-label {
@@ -436,7 +439,7 @@
         <div class="floor-plan">
 
           <!-- Rendered by JS -->
-          <div id="fpStage" style="display:flex;align-items:center;justify-content:center;gap:16px;">
+          <div id="fpStage" class="fp-stage">
             <span class="fp-stage-label">ステージ / 演台</span>
             <span style="font-size:10px;color:var(--text-light);letter-spacing:0.08em;">敬称略</span>
           </div>
