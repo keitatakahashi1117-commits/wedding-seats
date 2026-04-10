@@ -506,10 +506,6 @@
     const clearBtn = document.getElementById('clearBtn');
     const resultInfo = document.getElementById('resultInfo');
 
-    // Cache after render — DOM is static after page load
-    const allCards = Array.from(document.querySelectorAll('.table-card'));
-    const allGuests = Array.from(document.querySelectorAll('.guest-item'));
-
     let scrollTimeout = null;
 
     searchInput.addEventListener('input', doSearch);
@@ -523,6 +519,8 @@
         return;
       }
 
+      const allCards = document.querySelectorAll('.table-card');
+      const allGuests = document.querySelectorAll('.guest-item');
       let matchCount = 0;
       let firstMatch = null;
 
@@ -574,8 +572,10 @@
     }
 
     function resetSearch() {
-      allCards.forEach(c => c.classList.remove('dimmed', 'highlight-table'));
-      allGuests.forEach(g => g.classList.remove('highlight-guest', 'dimmed-guest'));
+      document.querySelectorAll('.table-card').forEach(c =>
+        c.classList.remove('dimmed', 'highlight-table'));
+      document.querySelectorAll('.guest-item').forEach(g =>
+        g.classList.remove('highlight-guest', 'dimmed-guest'));
       resultInfo.textContent = '';
     }
 
