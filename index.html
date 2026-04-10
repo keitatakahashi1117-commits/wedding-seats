@@ -259,7 +259,7 @@
         maxlength="32"
       />
       <button class="gate-toggle" onclick="togglePw()" title="表示切替" aria-label="パスワード表示切替">
-        <span id="eyeIcon">👁</span>
+        <span id="eyeIcon">表示</span>
       </button>
     </div>
 
@@ -325,10 +325,10 @@
       const icon = document.getElementById('eyeIcon');
       if (input.type === 'password') {
         input.type = 'text';
-        icon.textContent = '🙈';
+        icon.textContent = '非表示';
       } else {
         input.type = 'password';
-        icon.textContent = '👁';
+        icon.textContent = '表示';
       }
     }
 

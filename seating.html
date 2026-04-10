@@ -253,6 +253,20 @@
       margin-top: 2px;
       letter-spacing: 0.05em;
     }
+    .fp-table-names {
+      font-size: 9px;
+      color: var(--text-light);
+      margin-top: 4px;
+      line-height: 1.5;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+    .fp-table-main .fp-table-names {
+      color: rgba(255,255,255,0.7);
+    }
+    .fp-table:hover .fp-table-names {
+      color: rgba(255,255,255,0.8);
+    }
 
     .fp-row {
       display: grid;
@@ -408,7 +422,6 @@
   <!-- Sticky Search -->
   <div class="search-sticky" id="searchBar">
     <div class="search-inner">
-      <span class="search-icon">🔍</span>
       <input
         type="search"
         id="searchInput"
@@ -437,69 +450,12 @@
       <div class="floor-plan-card">
         <div class="floor-plan">
 
-          <!-- Stage -->
-          <div class="fp-stage">
-            <span class="fp-stage-label">ステージ / 演台</span>
-          </div>
-          <div class="fp-arrow">↓</div>
-
-          <!-- Main table -->
-          <div class="fp-main-row">
-            <div class="fp-table fp-table-main" onclick="scrollToTable('main')" title="メインテーブル">
-              <span class="fp-table-num">メインテーブル</span>
-              <span class="fp-table-count">新郎新婦 2名</span>
-            </div>
-          </div>
-          <div class="fp-arrow">↓</div>
-
-          <!-- Row 1: 03 04 05 06 -->
-          <div class="fp-row fp-row-4">
-            <div class="fp-table" onclick="scrollToTable('03')" title="テーブル03">
-              <span class="fp-table-num">03</span>
-              <span class="fp-table-count">4名</span>
-            </div>
-            <div class="fp-table" onclick="scrollToTable('04')" title="テーブル04">
-              <span class="fp-table-num">04</span>
-              <span class="fp-table-count">5名</span>
-            </div>
-            <div class="fp-table" onclick="scrollToTable('05')" title="テーブル05">
-              <span class="fp-table-num">05</span>
-              <span class="fp-table-count">5名</span>
-            </div>
-            <div class="fp-table" onclick="scrollToTable('06')" title="テーブル06">
-              <span class="fp-table-num">06</span>
-              <span class="fp-table-count">3名</span>
-            </div>
-          </div>
-
-          <!-- Row 2: 08 09 10 -->
-          <div class="fp-row fp-row-3">
-            <div class="fp-table" onclick="scrollToTable('08')" title="テーブル08">
-              <span class="fp-table-num">08</span>
-              <span class="fp-table-count">5名</span>
-            </div>
-            <div class="fp-table" onclick="scrollToTable('09')" title="テーブル09">
-              <span class="fp-table-num">09</span>
-              <span class="fp-table-count">6名</span>
-            </div>
-            <div class="fp-table" onclick="scrollToTable('10')" title="テーブル10">
-              <span class="fp-table-num">10</span>
-              <span class="fp-table-count">5名</span>
-            </div>
-          </div>
-
-          <!-- Row 3: 12 (left) ... 15 (right) -->
-          <div class="fp-row-2-spread">
-            <div class="fp-table" onclick="scrollToTable('12')" title="テーブル12">
-              <span class="fp-table-num">12</span>
-              <span class="fp-table-count">4名</span>
-            </div>
-            <div class="fp-spacer"></div>
-            <div class="fp-table" onclick="scrollToTable('15')" title="テーブル15">
-              <span class="fp-table-num">15</span>
-              <span class="fp-table-count">4名</span>
-            </div>
-          </div>
+          <!-- Rendered by JS -->
+          <div id="fpStage"><span class="fp-stage-label">ステージ / 演台</span></div>
+          <div id="fpMain" class="fp-main-row"></div>
+          <div id="fpRow1" class="fp-row fp-row-4"></div>
+          <div id="fpRow2" class="fp-row fp-row-3"></div>
+          <div id="fpRow3" class="fp-row-2-spread"></div>
 
         </div>
       </div>
@@ -638,6 +594,63 @@
         g.classList.remove('highlight-guest', 'dimmed-guest'));
       resultInfo.textContent = '';
     }
+
+    // ── Floor plan render ──
+    (function renderFloorPlan() {
+      const fpRowMap = {
+        main: 'fpMain',
+        '03': 'fpRow1', '04': 'fpRow1', '05': 'fpRow1', '06': 'fpRow1',
+        '08': 'fpRow2', '09': 'fpRow2', '10': 'fpRow2',
+        '12': 'fpRow3', '15': 'fpRow3',
+      };
+
+      function getNames(table) {
+        const surnames = table.guests.map(g => g.name.split('\u3000').join(' ').split(' ')[0]);
+        const unique = [...new Set(surnames)];
+        if (unique.length === 1) {
+          // 全員同姓（家族テーブル）→ 名前部分を表示
+          return table.guests.map(g => {
+            const parts = g.name.split('\u3000').join(' ').split(' ');
+            return parts[1] || parts[0];
+          });
+        }
+        return surnames;
+      }
+
+      TABLES.forEach(table => {
+        const rowId = fpRowMap[table.id];
+        if (!rowId) return;
+        const rowEl = document.getElementById(rowId);
+        const isMain = table.id === 'main';
+        const names = getNames(table);
+        // 2列に折り返して表示
+        const nameLines = [];
+        for (let i = 0; i < names.length; i += 2) {
+          nameLines.push(names.slice(i, i + 2).join('・'));
+        }
+
+        const div = document.createElement('div');
+        div.className = 'fp-table' + (isMain ? ' fp-table-main' : '');
+        div.title = table.label;
+        div.onclick = () => scrollToTable(table.id);
+        div.innerHTML = `
+          <span class="fp-table-num">${isMain ? 'メイン' : table.id}</span>
+          <span class="fp-table-count">${table.guests.length}名</span>
+          <span class="fp-table-names">${nameLines.join('<br>')}</span>
+        `;
+        if (table.id === '15') {
+          const spacer = document.createElement('div');
+          spacer.className = 'fp-spacer';
+          rowEl.appendChild(spacer);
+        }
+        rowEl.appendChild(div);
+        if (table.id === '12') {
+          const spacer = document.createElement('div');
+          spacer.className = 'fp-spacer';
+          rowEl.appendChild(spacer);
+        }
+      });
+    })();
 
     // ── Floor plan scroll ──
     function scrollToTable(id) {
