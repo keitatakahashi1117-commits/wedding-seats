@@ -95,8 +95,8 @@ const TABLES = [
     label: 'テーブル 12',
     group: '新郎 ご家族',
     guests: [
-      { name: '髙橋 凌也', kana: 'たかはし りょうや', relation: '新郎 兄' },
-      { name: '髙橋 智大', kana: 'たかはし ともひろ', relation: '新郎 兄' },
+      { name: '髙橋 凌也', kana: 'たかはし りょうや', relation: '新郎 兄', noSama: true },
+      { name: '髙橋 智大', kana: 'たかはし ともひろ', relation: '新郎 兄', noSama: true },
       { name: '髙橋 あけみ', kana: 'たかはし あけみ', relation: '新郎 母', noSama: true },
       { name: '髙橋 直人', kana: 'たかはし なおと', relation: '新郎 父', noSama: true },
     ]

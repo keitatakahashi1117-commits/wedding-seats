@@ -4,297 +4,384 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>席次表（印刷用） — 髙橋慶太 &amp; 菊地晴香</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --navy: #1A2B4A;
+      --gold: #C9A96E;
+      --gold-light: #E2C99A;
+      --text: #2A1F15;
+      --text-light: #6B5744;
+      --border: #D6C8B8;
+      --bg: #FDFAF6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: var(--white);
+      font-family: 'Noto Serif JP', serif;
+      background: var(--bg);
       color: var(--text);
-      padding: 24px;
+      font-size: 11px;
     }
 
-    /* ── Print button (screen only) ── */
-    .print-actions {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .btn-print-action {
-      display: inline-flex;
+    /* ── Screen: print button ── */
+    .screen-only {
+      display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 32px;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: var(--white);
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .btn-print {
+      padding: 10px 28px;
+      background: var(--navy);
+      color: white;
       border: none;
       cursor: pointer;
       font-family: 'Noto Serif JP', serif;
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      transition: all 0.3s ease;
-      margin-right: 12px;
-    }
-    .btn-print-action:hover {
-      box-shadow: 0 6px 20px rgba(201,169,110,0.4);
-      transform: translateY(-1px);
-    }
-
-    .btn-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border: 1px solid var(--gold);
-      background: transparent;
-      color: var(--gold-dark);
-      font-family: 'Noto Serif JP', serif;
-      font-size: 14px;
+      font-size: 13px;
       letter-spacing: 0.1em;
+      transition: opacity 0.2s;
+    }
+    .btn-print:hover { opacity: 0.85; }
+    .btn-back {
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-light);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 13px;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: background 0.2s;
     }
-    .btn-back:hover {
-      background: var(--ivory);
-    }
+    .btn-back:hover { background: #f0ebe4; }
 
-    /* ── Document ── */
-    .print-doc {
-      max-width: 720px;
-      margin: 0 auto;
-      background: var(--white);
-    }
-
-    /* ── Header ── */
-    .print-header {
-      text-align: center;
-      border: 1px solid rgba(201,169,110,0.4);
-      padding: 32px 24px 28px;
-      margin-bottom: 32px;
+    /* ── Page wrapper ── */
+    .page {
+      width: 297mm;
+      min-height: 210mm;
+      margin: 16px auto;
+      background: white;
+      padding: 12mm 14mm 10mm;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.12);
       position: relative;
     }
-    .print-header::before,
-    .print-header::after {
+
+    /* Corner decorations */
+    .page::before,
+    .page::after {
       content: '';
       position: absolute;
-      width: 48px;
-      height: 48px;
+      width: 28mm;
+      height: 28mm;
       border-color: var(--gold-light);
       border-style: solid;
     }
-    .print-header::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
-    .print-header::after  { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+    .page::before { top: 6mm; left: 6mm; border-width: 0.5px 0 0 0.5px; }
+    .page::after  { bottom: 6mm; right: 6mm; border-width: 0 0.5px 0.5px 0; }
 
-    .print-eyebrow {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 11px;
-      letter-spacing: 0.35em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 14px;
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6mm;
+      padding-bottom: 4mm;
+      border-bottom: 0.5px solid var(--gold-light);
     }
 
-    .print-names {
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .header-eyebrow {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 34px;
+      font-size: 8px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .header-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
       font-weight: 400;
       color: var(--navy);
       letter-spacing: 0.05em;
       line-height: 1.2;
-      margin-bottom: 10px;
     }
-    .print-amp {
+    .header-amp {
       font-style: italic;
       color: var(--gold);
+      margin: 0 4px;
     }
 
-    .print-meta {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
-      letter-spacing: 0.15em;
+    .header-right {
+      text-align: right;
+      line-height: 1.9;
       color: var(--text-light);
-    }
-    .print-venue {
-      font-size: 12px;
-      color: var(--text-light);
-      margin-top: 4px;
-      letter-spacing: 0.05em;
-    }
-
-    /* ── Table list ── */
-    .print-tables {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    .print-table-card {
-      border: 1px solid rgba(201,169,110,0.3);
-      padding: 16px 18px;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    .print-table-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 2px;
-    }
-
-    .print-table-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--navy);
-      letter-spacing: 0.05em;
-    }
-
-    .print-table-count {
-      font-size: 11px;
-      color: var(--text-light);
-    }
-
-    .print-table-group {
       font-size: 10px;
-      color: var(--gold-dark);
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
+      letter-spacing: 0.05em;
     }
-
-    .print-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
-      margin-bottom: 10px;
-    }
-
-    .print-guest-list {
-      list-style: none;
-    }
-
-    .print-guest-item {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 5px 0;
-      border-bottom: 1px solid var(--ivory-dark);
-      gap: 8px;
-    }
-    .print-guest-item:last-child {
-      border-bottom: none;
-    }
-
-    .print-guest-name {
+    .header-right-date {
+      font-family: 'Cormorant Garamond', serif;
       font-size: 13px;
-      font-weight: 500;
       color: var(--navy);
-      white-space: nowrap;
-    }
-    .print-guest-sama {
-      font-size: 11px;
-      color: var(--text-light);
-      font-weight: 300;
-    }
-    .print-guest-kana {
-      font-size: 9px;
-      color: var(--text-light);
-      letter-spacing: 0.04em;
-      flex: 1;
-      padding: 0 6px;
-    }
-    .print-guest-relation {
-      font-size: 10px;
-      color: var(--text-light);
-      white-space: nowrap;
-    }
-
-    .print-main-card {
-      grid-column: span 2;
-      background: linear-gradient(135deg, #f6f9ff 0%, var(--white) 100%);
-      border-color: var(--navy);
-    }
-    .print-main-card .print-table-num { color: var(--navy); }
-
-    /* ── Footer ── */
-    .print-footer {
-      text-align: center;
-      margin-top: 32px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(201,169,110,0.2);
-      font-size: 11px;
-      color: var(--text-light);
       letter-spacing: 0.1em;
     }
 
-    /* ── @media print ── */
-    @media print {
-      body { padding: 0; background: white; }
-      .print-actions { display: none; }
-      .print-doc { max-width: 100%; }
-      .print-header { padding: 20px 16px; margin-bottom: 20px; }
-      .print-names { font-size: 28px; }
-      .print-tables { gap: 14px; }
-      .print-table-card { padding: 12px 14px; }
-      .print-guest-name { font-size: 12px; }
+    /* ── Floor plan layout ── */
+    .floor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5mm;
     }
 
-    @media (max-width: 600px) {
-      .print-tables { grid-template-columns: 1fr; }
-      .print-main-card { grid-column: span 1; }
+    /* Stage */
+    .stage {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      border: 0.5px solid var(--gold-light);
+      padding: 3px 20px;
+      background: linear-gradient(135deg, rgba(201,169,110,0.05), transparent);
+    }
+
+    /* Rows */
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 5mm;
+      width: 100%;
+    }
+
+    .row-spread {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 10mm;
+    }
+
+    /* Individual table box */
+    .tbl {
+      border: 0.5px solid var(--border);
+      background: white;
+      display: flex;
+      flex-direction: column;
+      min-width: 50mm;
+      flex: 1;
+      max-width: 58mm;
+    }
+
+    .tbl-main {
+      min-width: 60mm;
+      max-width: 70mm;
+      border-color: var(--navy);
+      background: linear-gradient(135deg, #f5f8ff 0%, white 100%);
+    }
+
+    .tbl-header {
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      padding: 3px 6px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .tbl-main .tbl-header {
+      background: var(--navy);
+    }
+
+    .tbl-group {
+      text-align: center;
+      font-size: 8px;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      padding: 2px 4px;
+      border-bottom: 0.5px solid var(--border);
+      background: rgba(201,169,110,0.05);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tbl-guests {
+      list-style: none;
+      padding: 3px 6px;
+      flex: 1;
+    }
+
+    .tbl-guest {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 2px 0;
+      border-bottom: 0.3px solid #EDE8E0;
+      gap: 4px;
+    }
+    .tbl-guest:last-child { border-bottom: none; }
+
+    .tbl-guest-name {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: var(--navy);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .tbl-guest-sama {
+      font-size: 8.5px;
+      color: var(--text-light);
+      font-weight: 300;
+    }
+    .tbl-guest-kana {
+      font-size: 7.5px;
+      color: var(--text-light);
+      letter-spacing: 0.03em;
+      flex: 1;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 5mm;
+      padding-top: 3mm;
+      border-top: 0.5px solid var(--gold-light);
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--text-light);
+    }
+
+    /* ── Print ── */
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+      body { background: white; }
+      .screen-only { display: none !important; }
+      .page {
+        width: 297mm;
+        min-height: 210mm;
+        margin: 0;
+        box-shadow: none;
+        padding: 11mm 13mm 9mm;
+      }
+    }
+
+    /* ── Screen preview helpers ── */
+    @media screen {
+      body { background: #e8e4de; }
     }
   </style>
 </head>
 <body>
 
-  <div class="print-actions">
-    <button class="btn-print-action" onclick="window.print()">🖨 印刷 / PDFで保存</button>
-    <a href="seating.html" class="btn-back">← 戻る</a>
+  <div class="screen-only">
+    <button class="btn-print" onclick="window.print()">🖨 印刷 / PDFで保存（横向きA4）</button>
+    <a href="seating.html" class="btn-back">← 席次表に戻る</a>
   </div>
 
-  <div class="print-doc">
-    <div class="print-header">
-      <p class="print-eyebrow">Wedding Reception &nbsp;·&nbsp; 席次表</p>
-      <h1 class="print-names">
-        髙橋 慶太<span class="print-amp"> &amp; </span>菊地 晴香
-      </h1>
-      <p class="print-meta">2026年4月26日（日）&emsp;挙式 10:30 &nbsp;|&nbsp; 披露宴 11:15</p>
-      <p class="print-venue">カトルセゾンガーデン（さいたま）</p>
+  <div class="page" id="page">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <span class="header-eyebrow">Wedding Reception &nbsp;·&nbsp; 席次表</span>
+        <div class="header-names">
+          髙橋 慶太<span class="header-amp">&amp;</span>菊地 晴香
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-right-date">2026年4月26日（日）</div>
+        <div>挙式 10:30 &nbsp;|&nbsp; 披露宴 11:15</div>
+        <div>カトルセゾンガーデン（さいたま）</div>
+      </div>
     </div>
 
-    <div class="print-tables" id="printTables">
-      <!-- Rendered by JS -->
+    <!-- Floor plan -->
+    <div class="floor" id="floorPlan">
+
+      <!-- Stage -->
+      <div class="stage">Stage / ステージ</div>
+
+      <!-- Main table row -->
+      <div class="row" id="rowMain"></div>
+
+      <!-- Row 1: 03 04 05 06 -->
+      <div class="row" id="row1"></div>
+
+      <!-- Row 2: 08 09 10 -->
+      <div class="row" id="row2"></div>
+
+      <!-- Row 3: 12 ... 15 -->
+      <div class="row-spread" id="row3"></div>
+
     </div>
 
-    <div class="print-footer">
-      髙橋慶太 &amp; 菊地晴香 &nbsp;·&nbsp; 2026.04.26
+    <!-- Footer -->
+    <div class="footer">
+      髙橋慶太 &nbsp;&amp;&nbsp; 菊地晴香 &nbsp;·&nbsp; 2026.04.26 &nbsp;·&nbsp; カトルセゾンガーデン
     </div>
   </div>
 
   <script src="data.js"></script>
   <script>
-    const container = document.getElementById('printTables');
+    // Table → row mapping
+    const rows = {
+      main:  'rowMain',
+      '03':  'row1',
+      '04':  'row1',
+      '05':  'row1',
+      '06':  'row1',
+      '08':  'row2',
+      '09':  'row2',
+      '10':  'row2',
+      '12':  'row3',
+      '15':  'row3',
+    };
 
-    TABLES.forEach(table => {
-      const card = document.createElement('div');
-      card.className = 'print-table-card' + (table.id === 'main' ? ' print-main-card' : '');
+    function buildTable(table) {
+      const isMain = table.id === 'main';
+      const div = document.createElement('div');
+      div.className = 'tbl' + (isMain ? ' tbl-main' : '');
 
-      const rows = table.guests.map(g => `
-        <li class="print-guest-item">
-          <span class="print-guest-name">${g.name}${g.noSama ? '' : ' <span class="print-guest-sama">様</span>'}</span>
-          <span class="print-guest-kana">${g.kana}</span>
-          <span class="print-guest-relation">${g.relation}</span>
+      const guestRows = table.guests.map(g => `
+        <li class="tbl-guest">
+          <span class="tbl-guest-name">${g.name}${g.noSama ? '' : '<span class="tbl-guest-sama"> 様</span>'}</span>
+          <span class="tbl-guest-kana">${g.kana}</span>
         </li>
       `).join('');
 
-      card.innerHTML = `
-        <div class="print-table-header">
-          <span class="print-table-num">${table.label}</span>
-          <span class="print-table-count">${table.guests.length}名</span>
-        </div>
-        ${table.group ? `<div class="print-table-group">${table.group}</div>` : '<div style="height:8px;"></div>'}
-        <div class="print-divider"></div>
-        <ul class="print-guest-list">${rows}</ul>
+      div.innerHTML = `
+        <div class="tbl-header">${table.label}</div>
+        ${table.group ? `<div class="tbl-group">${table.group}</div>` : ''}
+        <ul class="tbl-guests">${guestRows}</ul>
       `;
-      container.appendChild(card);
+      return div;
+    }
+
+    // For row3, spacer between table 12 and 15
+    TABLES.forEach(table => {
+      const rowId = rows[table.id];
+      if (!rowId) return;
+      const rowEl = document.getElementById(rowId);
+      rowEl.appendChild(buildTable(table));
     });
   </script>
 </body>
