@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>QRコード生成 — 席次表</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 24px;
+      background: var(--ivory);
+    }
+    .qr-card {
+      background: var(--white);
+      border: 1px solid rgba(201,169,110,0.3);
+      box-shadow: var(--shadow-lg);
+      padding: 40px;
+      text-align: center;
+      max-width: 440px;
+      width: 100%;
+    }
+    .qr-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .qr-sub {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 28px;
+      letter-spacing: 0.05em;
+    }
+    .url-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--ivory-dark);
+      background: var(--ivory);
+      font-size: 13px;
+      font-family: monospace;
+      color: var(--text);
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .url-input:focus { border-color: var(--gold); }
+    .qr-canvas-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 24px 0;
+      min-height: 200px;
+      align-items: center;
+    }
+    canvas { border: 8px solid white; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    .btn-gen {
+      padding: 12px 32px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    .btn-gen:hover { box-shadow: 0 4px 16px rgba(201,169,110,0.4); }
+    .btn-dl {
+      display: inline-block;
+      padding: 10px 24px;
+      border: 1px solid var(--gold);
+      color: var(--gold-dark);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      letter-spacing: 0.08em;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .btn-dl:hover { background: var(--gold); color: white; }
+    .hint {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="qr-card">
+    <h1 class="qr-title">QRコード生成</h1>
+    <p class="qr-sub">GitHub Pages 公開後のURLを入力してください</p>
+
+    <input
+      type="text"
+      id="urlInput"
+      class="url-input"
+      placeholder="https://あなたのユーザー名.github.io/wedding-seats/"
+      value=""
+    />
+
+    <button class="btn-gen" onclick="generateQR()">QRコードを生成</button>
+
+    <div class="qr-canvas-wrap" id="qrWrap">
+      <p style="color:var(--text-light);font-size:13px;">URLを入力してボタンを押してください</p>
+    </div>
+
+    <a class="btn-dl" id="dlBtn" style="display:none;" download="wedding-qr.png">
+      📥 QRコードを保存 (PNG)
+    </a>
+
+    <p class="hint">
+      ※ GitHub Pages のURLは通常<br>
+      <code>https://ユーザー名.github.io/wedding-seats/</code><br>
+      の形式です。
+    </p>
+  </div>
+
+  <!-- QR code library (no external CDN needed — self-contained) -->
+  <script>
+  // Minimal QR Code generator (pure JS, no external dependency)
+  // Using qrcode-generator by kazuhikoarase (MIT License, embedded)
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    let qrInstance = null;
+
+    function generateQR() {
+      const url = document.getElementById('urlInput').value.trim();
+      if (!url) {
+        alert('URLを入力してください');
+        return;
+      }
+
+      const wrap = document.getElementById('qrWrap');
+      wrap.innerHTML = '';
+
+      const div = document.createElement('div');
+      div.id = 'qrcode';
+      wrap.appendChild(div);
+
+      qrInstance = new QRCode(div, {
+        text: url,
+        width: 200,
+        height: 200,
+        colorDark: '#1A2B4A',
+        colorLight: '#FFFFFF',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      // Download button
+      setTimeout(() => {
+        const canvas = wrap.querySelector('canvas');
+        if (canvas) {
+          const dl = document.getElementById('dlBtn');
+          dl.style.display = 'inline-block';
+          dl.href = canvas.toDataURL('image/png');
+        }
+      }, 200);
+    }
+
+    document.getElementById('urlInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') generateQR();
+    });
+  </script>
+</body>
+</html>

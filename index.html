@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>髙橋慶太 & 菊地晴香 — 結婚披露宴 席次表</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(212,165,165,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(201,169,110,0.12) 0%, transparent 60%),
+        var(--ivory);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Botanical corner decorations */
+    .corner-tl, .corner-br {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.22;
+    }
+    .corner-tl { top: -20px; left: -20px; transform: rotate(0deg); }
+    .corner-br { bottom: -20px; right: -20px; transform: rotate(180deg); }
+
+    /* Gate card */
+    .gate-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--white);
+      border: 1px solid rgba(201,169,110,0.3);
+      box-shadow: 0 20px 60px rgba(26,43,74,0.12), 0 4px 16px rgba(26,43,74,0.06);
+      padding: 48px 40px;
+      text-align: center;
+      position: relative;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .gate-card::before,
+    .gate-card::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-color: var(--gold-light);
+      border-style: solid;
+      opacity: 0.5;
+    }
+    .gate-card::before {
+      top: 12px; left: 12px;
+      border-width: 1px 0 0 1px;
+    }
+    .gate-card::after {
+      bottom: 12px; right: 12px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .gate-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .gate-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 6vw, 38px);
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .gate-amp {
+      font-style: italic;
+      color: var(--gold);
+      font-size: 0.9em;
+      margin: 0 8px;
+    }
+
+    .gate-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+
+    .gate-venue {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 36px;
+    }
+
+    .divider {
+      margin: 24px 0;
+    }
+
+    .gate-label {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .gate-input-wrap {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .gate-input {
+      width: 100%;
+      padding: 14px 48px 14px 20px;
+      border: 1px solid var(--ivory-dark);
+      background: var(--ivory);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      letter-spacing: 0.2em;
+      text-align: center;
+    }
+    .gate-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+    }
+
+    .gate-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 16px;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .gate-submit {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      letter-spacing: 0.2em;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .gate-submit::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .gate-submit:hover::after {
+      transform: translateX(100%);
+    }
+    .gate-submit:hover {
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+      box-shadow: 0 6px 24px rgba(201,169,110,0.4);
+    }
+    .gate-submit:active {
+      transform: scale(0.98);
+    }
+
+    .gate-error {
+      color: #C0392B;
+      font-size: 13px;
+      margin-top: 12px;
+      min-height: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .gate-footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--text-light);
+      opacity: 0.7;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 480px) {
+      .gate-card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botanical corners -->
+  <svg class="corner-tl" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 170 C10 90, 90 10, 170 10" stroke="#C9A96E" stroke-width="1" fill="none"/>
+    <path d="M30 170 C30 100, 100 30, 170 30" stroke="#C9A96E" stroke-width="0.5" fill="none" stroke-dasharray="4 6"/>
+    <circle cx="30" cy="40" r="6" fill="#C9A96E" opacity="0.6"/>
+    <circle cx="50" cy="25" r="4" fill="#C9A96E" opacity="0.4"/>
+    <circle cx="20" cy="60" r="3" fill="#D4A5A5" opacity="0.6"/>
+    <path d="M40 80 Q55 65 70 80 Q85 95 100 80" stroke="#C9A96E" stroke-width="0.8" fill="none"/>
+    <path d="M15 100 Q28 85 42 100" stroke="#C9A96E" stroke-width="0.8" fill="none"/>
+    <ellipse cx="60" cy="50" rx="8" ry="5" fill="none" stroke="#C9A96E" stroke-width="0.6" transform="rotate(-30 60 50)"/>
+    <ellipse cx="35" cy="75" rx="6" ry="4" fill="none" stroke="#D4A5A5" stroke-width="0.6" transform="rotate(15 35 75)"/>
+  </svg>
+
+  <svg class="corner-br" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 170 C10 90, 90 10, 170 10" stroke="#C9A96E" stroke-width="1" fill="none"/>
+    <path d="M30 170 C30 100, 100 30, 170 30" stroke="#C9A96E" stroke-width="0.5" fill="none" stroke-dasharray="4 6"/>
+    <circle cx="30" cy="40" r="6" fill="#C9A96E" opacity="0.6"/>
+    <circle cx="50" cy="25" r="4" fill="#C9A96E" opacity="0.4"/>
+    <circle cx="20" cy="60" r="3" fill="#D4A5A5" opacity="0.6"/>
+    <path d="M40 80 Q55 65 70 80 Q85 95 100 80" stroke="#C9A96E" stroke-width="0.8" fill="none"/>
+    <ellipse cx="60" cy="50" rx="8" ry="5" fill="none" stroke="#C9A96E" stroke-width="0.6" transform="rotate(-30 60 50)"/>
+    <ellipse cx="35" cy="75" rx="6" ry="4" fill="none" stroke="#D4A5A5" stroke-width="0.6" transform="rotate(15 35 75)"/>
+  </svg>
+
+  <div class="gate-card">
+    <p class="gate-eyebrow">Wedding Reception</p>
+
+    <h1 class="gate-names">
+      髙橋 慶太<span class="gate-amp">&amp;</span>菊地 晴香
+    </h1>
+
+    <div class="divider">
+      <span class="divider-diamond">◆</span>
+    </div>
+
+    <p class="gate-date">2026年4月26日（日）</p>
+    <p class="gate-venue">カトルセゾンガーデン（さいたま）</p>
+
+    <div class="divider" style="margin:28px 0 24px;">
+      <span class="divider-diamond">◆</span>
+    </div>
+
+    <label class="gate-label">パスワードを入力してください</label>
+
+    <div class="gate-input-wrap">
+      <input
+        type="password"
+        id="pwInput"
+        class="gate-input"
+        placeholder="••••••••••••"
+        autocomplete="off"
+        maxlength="32"
+      />
+      <button class="gate-toggle" onclick="togglePw()" title="表示切替" aria-label="パスワード表示切替">
+        <span id="eyeIcon">👁</span>
+      </button>
+    </div>
+
+    <button class="gate-submit" onclick="checkPassword()">
+      入　場
+    </button>
+
+    <p class="gate-error" id="errorMsg"></p>
+
+    <p class="gate-footer">
+      挙式 10:30 &nbsp;|&nbsp; 披露宴 11:15
+    </p>
+  </div>
+
+  <script>
+    // SHA-256 hash of "takahashi0426"
+    // To change password: node -e "require('crypto').createHash('sha256').update('newpassword').digest('hex')"
+    const CORRECT_HASH = '50564cb224c06fdcf40e6054b8905bd8deb169159b87a4387ff468e92501741e';
+
+    // Already authenticated?
+    if (sessionStorage.getItem('weddingAuth') === 'ok') {
+      window.location.replace('seating.html');
+    }
+
+    async function sha256(str) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(str);
+      const buf = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function checkPassword() {
+      const input = document.getElementById('pwInput').value.trim();
+      const errEl = document.getElementById('errorMsg');
+
+      if (!input) {
+        errEl.textContent = 'パスワードを入力してください';
+        return;
+      }
+
+      const hash = await sha256(input);
+
+      if (hash === CORRECT_HASH) {
+        sessionStorage.setItem('weddingAuth', 'ok');
+        errEl.textContent = '';
+        window.location.replace('seating.html');
+      } else {
+        errEl.textContent = 'パスワードが正しくありません';
+        document.getElementById('pwInput').value = '';
+        document.getElementById('pwInput').focus();
+        // Shake animation
+        const card = document.querySelector('.gate-card');
+        card.style.transform = 'translateX(-6px)';
+        setTimeout(() => card.style.transform = 'translateX(6px)', 80);
+        setTimeout(() => card.style.transform = 'translateX(-4px)', 160);
+        setTimeout(() => card.style.transform = 'translateX(0)', 240);
+        card.style.transition = 'transform 0.08s ease';
+      }
+    }
+
+    function togglePw() {
+      const input = document.getElementById('pwInput');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        icon.textContent = '👁';
+      }
+    }
+
+    document.getElementById('pwInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkPassword();
+    });
+  </script>
+</body>
+</html>
