@@ -572,9 +572,9 @@
     (function renderFloorPlan() {
       const fpRowMap = {
         main: 'fpMain',
-        '03': 'fpRow1', '04': 'fpRow1', '05': 'fpRow1', '06': 'fpRow1',
-        '08': 'fpRow2', '09': 'fpRow2', '10': 'fpRow2',
-        '12': 'fpRow3', '15': 'fpRow3',
+        '01': 'fpRow1', '02': 'fpRow1', '03': 'fpRow1', '04': 'fpRow1',
+        '05': 'fpRow2', '06': 'fpRow2', '07': 'fpRow2',
+        '08': 'fpRow3', '09': 'fpRow3',
       };
 
       const rowEls = {};
@@ -612,7 +612,7 @@
           <span class="fp-table-count">${table.guests.length}名</span>
           <span class="fp-table-names">${nameLines.join('<br>')}</span>
         `;
-        if (table.id === '15') {
+        if (table.id === '09') {
           rowEl.appendChild(Object.assign(document.createElement('div'), { className: 'fp-spacer' }));
         }
         rowEl.appendChild(div);

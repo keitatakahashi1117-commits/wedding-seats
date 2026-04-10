@@ -9,8 +9,8 @@ const TABLES = [
     ]
   },
   {
-    id: '03',
-    label: 'テーブル 03',
+    id: '01',
+    label: 'テーブル 01',
     group: '新郎 ゲーム仲間',
     guests: [
       { name: '鈴木 勝貴', kana: 'すずき まさたか', relation: '新郎 ゲーム仲間' },
@@ -20,8 +20,8 @@ const TABLES = [
     ]
   },
   {
-    id: '04',
-    label: 'テーブル 04',
+    id: '02',
+    label: 'テーブル 02',
     group: '職場関係',
     guests: [
       { name: '小野 隼人', kana: 'おの はやと', relation: '新郎 高校友人' },
@@ -32,8 +32,8 @@ const TABLES = [
     ]
   },
   {
-    id: '05',
-    label: 'テーブル 05',
+    id: '03',
+    label: 'テーブル 03',
     group: '職場関係',
     guests: [
       { name: '小玉 隼太郎', kana: 'こだま しゅんたろう', relation: '新婦 元職場上司' },
@@ -44,8 +44,8 @@ const TABLES = [
     ]
   },
   {
-    id: '06',
-    label: 'テーブル 06',
+    id: '04',
+    label: 'テーブル 04',
     group: '新婦 中学友人',
     guests: [
       { name: '永井 菜月', kana: 'ながい なつき', relation: '新婦 中学友人' },
@@ -54,8 +54,8 @@ const TABLES = [
     ]
   },
   {
-    id: '08',
-    label: 'テーブル 08',
+    id: '05',
+    label: 'テーブル 05',
     group: '新郎 ゲーム仲間',
     guests: [
       { name: '有馬 準', kana: 'ありま ひとし', relation: '新郎 ゲーム仲間' },
@@ -66,8 +66,8 @@ const TABLES = [
     ]
   },
   {
-    id: '09',
-    label: 'テーブル 09',
+    id: '06',
+    label: 'テーブル 06',
     group: '新婦 友人・同期',
     guests: [
       { name: '古屋 美幸', kana: 'ふるや みゆき', relation: '新婦 元職場先輩' },
@@ -79,8 +79,8 @@ const TABLES = [
     ]
   },
   {
-    id: '10',
-    label: 'テーブル 10',
+    id: '07',
+    label: 'テーブル 07',
     group: '新婦 高校友人',
     guests: [
       { name: '小西 有香里', kana: 'こにし ゆかり', relation: '新婦 高校友人' },
@@ -91,8 +91,8 @@ const TABLES = [
     ]
   },
   {
-    id: '12',
-    label: 'テーブル 12',
+    id: '08',
+    label: 'テーブル 08',
     group: '新郎 ご家族',
     guests: [
       { name: '髙橋 凌也', kana: 'たかはし りょうや', relation: '新郎 兄', noSama: true },
@@ -102,8 +102,8 @@ const TABLES = [
     ]
   },
   {
-    id: '15',
-    label: 'テーブル 15',
+    id: '09',
+    label: 'テーブル 09',
     group: '新婦 ご家族',
     guests: [
       { name: '菊地 希帆', kana: 'きくち きほ', relation: '新婦 義妹' },
