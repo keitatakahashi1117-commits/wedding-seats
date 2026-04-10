@@ -4,8 +4,8 @@ const TABLES = [
     label: 'メインテーブル',
     group: '',
     guests: [
-      { name: '髙橋 慶太', kana: 'たかはし けいた', relation: '新郎' },
-      { name: '菊地 晴香', kana: 'きくち はるか', relation: '新婦' },
+      { name: '髙橋 慶太', kana: 'たかはし けいた', relation: '新郎', noSama: true },
+      { name: '菊地 晴香', kana: 'きくち はるか', relation: '新婦', noSama: true },
     ]
   },
   {
