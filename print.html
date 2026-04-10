@@ -216,38 +216,36 @@
       list-style: none;
       padding: 2px 5px;
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-content: space-evenly;
+      gap: 0 4px;
     }
 
     .tbl-guest {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 1px 0;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5px 0;
       border-bottom: 0.3px solid #EDE8E0;
-      gap: 3px;
     }
     .tbl-guest:last-child { border-bottom: none; }
 
     .tbl-guest-name {
-      font-size: 9.5px;
+      font-size: 8.5px;
       font-weight: 500;
       color: var(--navy);
       white-space: nowrap;
       letter-spacing: 0.02em;
     }
     .tbl-guest-sama {
-      font-size: 8px;
+      font-size: 7.5px;
       color: var(--text-light);
       font-weight: 300;
     }
     .tbl-guest-kana {
-      font-size: 7px;
+      font-size: 6.5px;
       color: var(--text-light);
-      flex: 1;
-      text-align: right;
       white-space: nowrap;
     }
 
