@@ -85,19 +85,9 @@
       position: relative;
     }
 
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--gold);
-      font-size: 16px;
-      pointer-events: none;
-    }
-
     .search-input {
       width: 100%;
-      padding: 12px 44px 12px 44px;
+      padding: 12px 44px 12px 16px;
       border: 1px solid rgba(201,169,110,0.4);
       background: var(--white);
       font-family: 'Noto Serif JP', serif;
@@ -270,22 +260,31 @@
 
     .fp-row {
       display: grid;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 6px;
+      margin-bottom: 6px;
+      width: 100%;
     }
     .fp-row-4 { grid-template-columns: repeat(4, 1fr); }
     .fp-row-3 { grid-template-columns: repeat(3, 1fr); }
     .fp-row-2-spread {
       display: flex;
       justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
     }
     .fp-row-2-spread .fp-table {
       flex: 0 0 auto;
-      width: calc(50% - 40px);
+      width: 38%;
     }
     .fp-row-2-spread .fp-spacer {
       flex: 1;
+    }
+
+    @media (max-width: 480px) {
+      .fp-row-4 { grid-template-columns: repeat(2, 1fr); }
+      .fp-table { padding: 8px 6px; min-width: 0; }
+      .fp-table-num { font-size: 13px; }
+      .fp-table-names { font-size: 8px; }
+      .fp-row-2-spread .fp-table { width: 40%; }
     }
 
     /* Arrow to tables */
@@ -362,13 +361,6 @@
       list-style: none;
     }
 
-    /* ── Print button ── */
-    .actions {
-      text-align: center;
-      margin-bottom: 40px;
-      animation: fadeUp 0.7s 0.55s ease both;
-    }
-
     .actions { display: none; }
 
     /* ── Hidden/dimmed states ── */
@@ -395,13 +387,6 @@
       border-top: 1px solid rgba(201,169,110,0.15);
     }
 
-    @media (max-width: 600px) {
-      .fp-row-4 { grid-template-columns: repeat(2, 1fr); }
-      .fp-row-3 { grid-template-columns: repeat(3, 1fr); }
-      .fp-table { padding: 8px 10px; min-width: 0; }
-      .fp-table-num { font-size: 13px; }
-      .fp-row-2-spread .fp-table { width: calc(50% - 24px); }
-    }
   </style>
 </head>
 <body>
@@ -447,12 +432,14 @@
     <!-- Floor Plan -->
     <section class="floor-plan-section">
       <h2 class="section-title">会場テーブル配置図</h2>
-      <p style="text-align:center;font-size:11px;color:var(--text-light);letter-spacing:0.08em;margin-bottom:12px;">敬称略</p>
       <div class="floor-plan-card">
         <div class="floor-plan">
 
           <!-- Rendered by JS -->
-          <div id="fpStage"><span class="fp-stage-label">ステージ / 演台</span></div>
+          <div id="fpStage" style="display:flex;align-items:center;justify-content:center;gap:16px;">
+            <span class="fp-stage-label">ステージ / 演台</span>
+            <span style="font-size:10px;color:var(--text-light);letter-spacing:0.08em;">敬称略</span>
+          </div>
           <div id="fpMain" class="fp-main-row"></div>
           <div id="fpRow1" class="fp-row fp-row-4"></div>
           <div id="fpRow2" class="fp-row fp-row-3"></div>
@@ -519,6 +506,12 @@
     const clearBtn = document.getElementById('clearBtn');
     const resultInfo = document.getElementById('resultInfo');
 
+    // Cache after render — DOM is static after page load
+    const allCards = Array.from(document.querySelectorAll('.table-card'));
+    const allGuests = Array.from(document.querySelectorAll('.guest-item'));
+
+    let scrollTimeout = null;
+
     searchInput.addEventListener('input', doSearch);
 
     function doSearch() {
@@ -530,21 +523,15 @@
         return;
       }
 
-      const allCards = document.querySelectorAll('.table-card');
-      const allGuests = document.querySelectorAll('.guest-item');
       let matchCount = 0;
       let firstMatch = null;
 
-      // Reset
       allCards.forEach(c => c.classList.remove('dimmed', 'highlight-table'));
       allGuests.forEach(g => g.classList.remove('highlight-guest', 'dimmed-guest'));
 
-      // Match
       allGuests.forEach(g => {
-        const name = g.getAttribute('data-name') || '';
-        const kana = g.getAttribute('data-kana') || '';
-        const matched = name.includes(query) || kana.includes(query);
-
+        const matched = g.getAttribute('data-name').includes(query) ||
+                        g.getAttribute('data-kana').includes(query);
         if (matched) {
           g.classList.add('highlight-guest');
           matchCount++;
@@ -554,13 +541,11 @@
         }
       });
 
-      // Dim non-matching cards
       allCards.forEach(card => {
-        const hasHighlight = card.querySelector('.highlight-guest');
-        if (!hasHighlight) {
-          card.classList.add('dimmed');
-        } else {
+        if (card.querySelector('.highlight-guest')) {
           card.classList.add('highlight-table');
+        } else {
+          card.classList.add('dimmed');
         }
       });
 
@@ -570,11 +555,12 @@
       } else {
         resultInfo.textContent = `${matchCount}名見つかりました`;
         resultInfo.style.color = 'var(--gold-dark)';
-        // Scroll to first match
         if (firstMatch) {
           const card = firstMatch.closest('.table-card');
           if (card) {
-            setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() =>
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
           }
         }
       }
@@ -583,16 +569,13 @@
     function clearSearch() {
       searchInput.value = '';
       clearBtn.style.display = 'none';
-      resultInfo.textContent = '';
       resetSearch();
       searchInput.focus();
     }
 
     function resetSearch() {
-      document.querySelectorAll('.table-card').forEach(c =>
-        c.classList.remove('dimmed', 'highlight-table'));
-      document.querySelectorAll('.guest-item').forEach(g =>
-        g.classList.remove('highlight-guest', 'dimmed-guest'));
+      allCards.forEach(c => c.classList.remove('dimmed', 'highlight-table'));
+      allGuests.forEach(g => g.classList.remove('highlight-guest', 'dimmed-guest'));
       resultInfo.textContent = '';
     }
 
@@ -605,15 +588,17 @@
         '12': 'fpRow3', '15': 'fpRow3',
       };
 
+      const rowEls = {};
+      Object.keys(fpRowMap).forEach(id => {
+        rowEls[fpRowMap[id]] = document.getElementById(fpRowMap[id]);
+      });
+
       function getNames(table) {
-        const surnames = table.guests.map(g => g.name.split('\u3000').join(' ').split(' ')[0]);
+        const parts = table.guests.map(g => g.name.split(/[\u3000 ]/));
+        const surnames = parts.map(p => p[0]);
         const unique = [...new Set(surnames)];
         if (unique.length === 1) {
-          // 全員同姓（家族テーブル）→ 名前部分を表示
-          return table.guests.map(g => {
-            const parts = g.name.split('\u3000').join(' ').split(' ');
-            return parts[1] || parts[0];
-          });
+          return parts.map(p => p[1] || p[0]);
         }
         return surnames;
       }
@@ -621,10 +606,9 @@
       TABLES.forEach(table => {
         const rowId = fpRowMap[table.id];
         if (!rowId) return;
-        const rowEl = document.getElementById(rowId);
+        const rowEl = rowEls[rowId];
         const isMain = table.id === 'main';
         const names = getNames(table);
-        // 2列に折り返して表示
         const nameLines = [];
         for (let i = 0; i < names.length; i += 2) {
           nameLines.push(names.slice(i, i + 2).join('・'));
@@ -640,16 +624,9 @@
           <span class="fp-table-names">${nameLines.join('<br>')}</span>
         `;
         if (table.id === '15') {
-          const spacer = document.createElement('div');
-          spacer.className = 'fp-spacer';
-          rowEl.appendChild(spacer);
+          rowEl.appendChild(Object.assign(document.createElement('div'), { className: 'fp-spacer' }));
         }
         rowEl.appendChild(div);
-        if (table.id === '12') {
-          const spacer = document.createElement('div');
-          spacer.className = 'fp-spacer';
-          rowEl.appendChild(spacer);
-        }
       });
     })();
 
